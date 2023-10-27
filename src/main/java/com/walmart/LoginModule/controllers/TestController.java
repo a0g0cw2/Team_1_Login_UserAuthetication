@@ -13,29 +13,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/test")
 public class TestController {
+
+  //API can be accessed by any user irrespective of roles
   @GetMapping("/all")
   public String allAccess() {
     return "Public Content.";
   }
 
+  //API can be accessed by user with any role USER, GUEST, ADMIN
   @GetMapping("/user")
   @PreAuthorize("hasRole('USER') or hasRole('GUEST') or hasRole('ADMIN')")
   public String userAccess() {
     return "User Page.";
   }
 
+  //GUEST role user can access this API
   @GetMapping("/guest")
   @PreAuthorize("hasRole('GUEST')")
   public String moderatorAccess() {
     return "Guest Page.";
   }
 
+  //ADMIN role user can access this API
   @GetMapping("/admin")
   @PreAuthorize("hasRole('ADMIN')")
   public String adminAccess() {
     return "Admin Page.";
   }
 
+  //API to identify user is logged-in or not
   @GetMapping("/home")
   public ResponseEntity<String> homePage(){
     Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
